@@ -17,19 +17,20 @@ function handleDragOver(event) {
 }
 
 function handleDrop(event) {
-  event.preventDefault(); // Prevent default behavior
+    if (draggedDiv !== event.target) {
+        // Swap background images
+        let draggedBg = window.getComputedStyle(draggedDiv).backgroundImage;
+        let targetBg = window.getComputedStyle(event.target).backgroundImage;
 
-  if (draggedDiv !== event.target) {
-    // Use getComputedStyle to get the background images
-    let draggedBg = window.getComputedStyle(draggedDiv).getPropertyValue('background-image');
-    let targetBg = window.getComputedStyle(event.target).getPropertyValue('background-image');
+        draggedDiv.style.backgroundImage = targetBg;
+        event.target.style.backgroundImage = draggedBg;
 
-    // Log the images to check if they're correctly retrieved
-    console.log('Dragged:', draggedBg);
-    console.log('Dropped:', targetBg);
+        // Swap text content (Image 1, Image 5, etc.)
+        let draggedText = draggedDiv.textContent;
+        let targetText = event.target.textContent;
 
-    // Swap the background images
-    draggedDiv.style.backgroundImage = targetBg;
-    event.target.style.backgroundImage = draggedBg;
-  }
+        draggedDiv.textContent = targetText;
+        event.target.textContent = draggedText;
+    }
 }
+
